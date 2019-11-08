@@ -1,4 +1,4 @@
-package com.example.common
+package com.example.common.ext
 
 /**
  * Created by CHULEI on 2019/11/7.
