@@ -16,11 +16,17 @@ import rx.schedulers.Schedulers
 /**
  * Created by CHULEI on 2019/11/8.
  */
+interface OnAccountStateChangeListener {
+    fun onLogin(user: User)
+
+    fun onLogout()
+}
+
 object AccountManager {
-    var userName by pref("")
-    var passWord by pref("")
-    var token by pref("")
     var authId by pref(-1)
+    var username by pref("")
+    var passwd by pref("")
+    var token by pref("")
 
     private var userJson by pref("")
 
@@ -32,44 +38,54 @@ object AccountManager {
             return field
         }
         set(value) {
-            if (value == null) {
+            if(value == null){
                 userJson = ""
             } else {
                 userJson = Gson().toJson(value)
             }
-
             field = value
         }
 
-    fun isLoginIn(): Boolean = token.isNotEmpty()
+    val onAccountStateChangeListeners = ArrayList<OnAccountStateChangeListener>()
 
-    fun login() = AuthService.createAuthorization(AuthorizationReq())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
-        .doOnNext {
-            if (it.token.isEmpty()) throw AccountException(it)
+    private fun notifyLogin(user: User) {
+        onAccountStateChangeListeners.forEach {
+            it.onLogin(user)
         }
-        .retryWhen {
-            it.flatMap {
-                if (it is AccountException) {
-                    AuthService.deleteAuthorization(it.authorizationRsp.id)
-                } else {
-                    Observable.error(it)
+    }
+
+    private fun notifyLogout() {
+        onAccountStateChangeListeners.forEach { it.onLogout() }
+    }
+
+    fun isLoggedIn(): Boolean = token.isNotEmpty()
+
+    fun login() =
+        AuthService.createAuthorization(AuthorizationReq())
+            .doOnNext {
+                if (it.token.isEmpty()) throw AccountException(it)
+            }
+            .retryWhen {
+                it.flatMap {
+                    if (it is AccountException) {
+                        AuthService.deleteAuthorization(it.authorizationRsp.id)
+                    } else {
+                        Observable.error(it)
+                    }
                 }
             }
-        }
-        .flatMap {
-            token = it.token
-            authId = it.id
-            UserService.getAuthenticatedUser()
-        }.map {
-            currentUser = it
-            notifyLogin(it)
-        }
+            .flatMap {
+                token = it.token
+                authId = it.id
+                UserService.getAuthenticatedUser()
+            }
+            .map {
+                currentUser = it
+                notifyLogin(it)
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
 
     fun logout() = AuthService.deleteAuthorization(authId)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
         .doOnNext {
             if (it.isSuccessful) {
                 authId = -1
@@ -82,24 +98,4 @@ object AccountManager {
         }
 
     class AccountException(val authorizationRsp: AuthorizationRsp) : Exception("Already logged in.")
-
-    private val onAccountStateChangeListener = ArrayList<OnAccountStateChangeListener>()
-
-    private fun notifyLogin(user: User) {
-        onAccountStateChangeListener.forEach {
-            it.onLogin(user)
-        }
-    }
-
-    private fun notifyLogout() {
-        onAccountStateChangeListener.forEach {
-            it.onLogout()
-        }
-    }
-}
-
-interface OnAccountStateChangeListener {
-    fun onLogin(user: User)
-
-    fun onLogout()
 }

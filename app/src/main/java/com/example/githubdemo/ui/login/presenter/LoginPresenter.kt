@@ -9,8 +9,8 @@ import com.example.mvp.impl.BasePresenter
  */
 class LoginPresenter : BasePresenter<LoginActivity>() {
     fun doLogin(name: String, passWord: String) {
-        AccountManager.userName = name
-        AccountManager.passWord = passWord
+        AccountManager.username = name
+        AccountManager.passwd = passWord
         view.onLoginStart()
         AccountManager.login().subscribe({
             view.onLoginSuccess()
@@ -29,6 +29,7 @@ class LoginPresenter : BasePresenter<LoginActivity>() {
 
     override fun onResume() {
         super.onResume()
-        view.onDataInit(AccountManager.userName, AccountManager.passWord)
+        view.onDataInit(AccountManager.username, AccountManager.passwd)
     }
 }
+

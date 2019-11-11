@@ -1,6 +1,10 @@
 package com.example.githubdemo.ui.login.view
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -58,21 +62,47 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
     }
 
     fun onLoginSuccess() {
+        Log.e("tag", Thread.currentThread().name)
+        showProgress(false)
         toast("登录成功")
     }
 
     fun onLoginError(e: Throwable) {
         e.printStackTrace()
+        showProgress(false)
         toast("登陆失败")
     }
 
     fun onLoginStart() {
-
+        showProgress(true)
     }
 
     fun onDataInit(name: String, passwd: String) {
         userName.setText(name)
         passWord.setText(passwd)
+    }
+
+    private fun showProgress(show: Boolean) {
+        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
+        loginForm.animate().setDuration(shortAnimTime.toLong()).alpha(
+            (if (show) 0 else 1).toFloat()
+        ).setListener(
+            object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    loginForm.visibility = if (show) View.GONE else View.VISIBLE
+                }
+
+            }
+        )
+
+        loginProgress.animate().setDuration(shortAnimTime.toLong()).alpha(
+            (if (show) 1 else 0).toFloat()
+        ).setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                loginProgress.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
+
     }
 }
 
