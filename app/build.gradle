@@ -78,6 +78,7 @@ dependencies {
 
     implementation project(":common")
     implementation project(":mvp")
+    implementation project(":layout")
 
     api 'com.bennyhuo.tieguanyin:tieguanyin-runtime:0.3-beta'
     kapt 'com.bennyhuo.tieguanyin:tieguanyin-compiler:0.3-beta'

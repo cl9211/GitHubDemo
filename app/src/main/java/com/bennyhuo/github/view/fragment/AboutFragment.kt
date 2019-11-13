@@ -27,7 +27,7 @@ class AboutFragment : Fragment() {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView("GitHub") {
+                    themedTextView("GitHub", R.style.detail_title) {
                         textColor = R.color.colorPrimary
                     }.lparams(
                             width = wrapContent, height = wrapContent
@@ -35,7 +35,7 @@ class AboutFragment : Fragment() {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView("By Bennyhuo") {
+                    themedTextView("By Bennyhuo", R.style.detail_title) {
                         textColor = R.color.colorPrimary
                     }.lparams(
                             width = wrapContent, height = wrapContent
@@ -43,7 +43,7 @@ class AboutFragment : Fragment() {
                         gravity = Gravity.CENTER_HORIZONTAL
                     }
 
-                    textView(R.string.open_source_licenses) {
+                    themedTextView(R.string.open_source_licenses, R.style.detail_title) {
                         textColor = R.color.colorPrimary
 
                         onClick {
