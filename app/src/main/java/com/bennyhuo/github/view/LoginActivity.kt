@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
 
-/**
- * A login screen that offers login via email/password.
- */
 @ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_NO_HISTORY])
 class LoginActivity : BaseActivity<LoginPresenter>() {
 
@@ -62,27 +59,28 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
         })
     }
 
-    private fun showTips(view: EditText, tips: String){
+    private fun showTips(view: EditText, tips: String) {
         view.requestFocus()
         view.error = tips
     }
 
-    fun onLoginStart(){
+    fun onLoginStart() {
         showProgress(true)
     }
 
-    fun onLoginError(e: Throwable){
+    fun onLoginError(e: Throwable) {
         e.printStackTrace()
         toast("登录失败")
         showProgress(false)
     }
 
-    fun onLoginSuccess(){
+    fun onLoginSuccess() {
         toast("登录成功")
         showProgress(false)
+        startMainActivity()
     }
 
-    fun onDataInit(name: String, passwd: String){
+    fun onDataInit(name: String, passwd: String) {
         username.setText(name)
         password.setText(passwd)
     }

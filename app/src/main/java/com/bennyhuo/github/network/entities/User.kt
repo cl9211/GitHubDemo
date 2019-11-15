@@ -32,3 +32,11 @@ data class User(var login: String,
                 var owned_private_repos: Int,
                 var disk_usage: Int,
                 var collaborators: Int): Parcelable
+
+@PoKo
+@Parcelize
+data class BasicUser(
+        var login: String,
+        var avatar_url: String,
+        var html_url: String
+): Parcelable
