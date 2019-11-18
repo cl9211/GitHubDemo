@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
         ActionBarController(this)
     }
 
-    private val navigationController by lazy{
+    private val navigationController by lazy {
         NavigationController(navigationView, ::onNavItemChanged, ::handleNavigationHeaderClickEvent)
     }
 
@@ -71,20 +71,20 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
         navigationController.useNoLoginLayout()
     }
 
-    private fun onNavItemChanged(navViewItem: NavViewItem){
+    private fun onNavItemChanged(navViewItem: NavViewItem) {
         drawer_layout.afterClosed {
             showFragment(R.id.fragmentContainer, navViewItem.fragmentClass, navViewItem.arguements)
             title = navViewItem.title
         }
     }
 
-    private fun handleNavigationHeaderClickEvent(){
+    private fun handleNavigationHeaderClickEvent() {
         AccountManager.isLoggedIn().no {
             startLoginActivity()
         }.otherwise {
             AccountManager
                     .logout()
-                    .subscribe ({
+                    .subscribe({
                         toast("注销成功")
                     }, {
                         it.printStackTrace()
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
     }
 
     override fun onBackPressed() {
-        if(drawer_layout.isDrawerOpen(GravityCompat.START)){
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
