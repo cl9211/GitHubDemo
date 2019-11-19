@@ -14,6 +14,7 @@ import com.bennyhuo.github.presenter.LoginPresenter
 import com.bennyhuo.mvp.impl.BaseActivity
 import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.app_bar_simple.*
 import org.jetbrains.anko.sdk15.listeners.onClick
 import org.jetbrains.anko.toast
 
@@ -23,6 +24,7 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        setSupportActionBar(toolbar)
 
         signInButton.onClick {
             presenter.checkUserName(username.text.toString())

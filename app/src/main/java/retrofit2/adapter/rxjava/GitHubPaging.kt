@@ -19,7 +19,7 @@ class GitHubPaging<T> : ArrayList<T>() {
     val isLast
         get() = last == null
 
-    val hasNext 
+    val hasNext
         get() = next != null
 
     val isFirst
@@ -27,6 +27,8 @@ class GitHubPaging<T> : ArrayList<T>() {
 
     val hasPrev
         get() = prev != null
+
+    var since: Int = 0
 
     operator fun get(key: String): String? {
         return relMap[key]

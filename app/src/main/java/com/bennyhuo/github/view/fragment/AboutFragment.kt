@@ -28,7 +28,6 @@ class AboutFragment : CommonSinglePageFragment() {
                     }
 
                     themedTextView("GitHub", R.style.detail_title) {
-                        textColor = R.color.colorPrimary
                     }.lparams(
                             width = wrapContent, height = wrapContent
                     ) {
@@ -36,7 +35,6 @@ class AboutFragment : CommonSinglePageFragment() {
                     }
 
                     themedTextView("By Bennyhuo", R.style.detail_title) {
-                        textColor = R.color.colorPrimary
                     }.lparams(
                             width = wrapContent, height = wrapContent
                     ) {
@@ -44,7 +42,6 @@ class AboutFragment : CommonSinglePageFragment() {
                     }
 
                     themedTextView(R.string.open_source_licenses, R.style.detail_title) {
-                        textColor = R.color.colorPrimary
 
                         onClick {
                             alert {
