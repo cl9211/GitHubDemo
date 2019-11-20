@@ -16,6 +16,9 @@ interface RepositoryApi {
 
     @GET("/search/repositories?order=desc&sort=updated")
     fun allRepositories(@Query("page") page: Int = 1, @Query("q") q: String, @Query("per_page") per_page: Int = 20): Observable<SearchRepositories>
+
+    @GET("/repos/{owner}/{repo}")
+    fun getRepository(@Path("owner") owner: String, @Path("repo") repo: String): Observable<Repository>
 }
 
 object RepositoryService : RepositoryApi by retrofit.create(RepositoryApi::class.java)

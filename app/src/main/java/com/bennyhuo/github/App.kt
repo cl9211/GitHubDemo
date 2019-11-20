@@ -4,15 +4,19 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.support.multidex.MultiDex
+import android.support.v7.app.AppCompatDelegate
+import com.bennyhuo.swipefinishable.SwipeFinishable
 import com.bennyhuo.tieguanyin.runtime.core.ActivityBuilder
 
 private lateinit var INSTANCE: Application
 
-class App: Application() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
         ActivityBuilder.INSTANCE.init(this)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        SwipeFinishable.INSTANCE.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {
@@ -21,4 +25,4 @@ class App: Application() {
     }
 }
 
-object AppContext: ContextWrapper(INSTANCE)
+object AppContext : ContextWrapper(INSTANCE)

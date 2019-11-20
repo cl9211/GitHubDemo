@@ -11,6 +11,7 @@ import com.bennyhuo.github.R
 import com.bennyhuo.github.common.ext.otherwise
 import com.bennyhuo.github.common.ext.yes
 import com.bennyhuo.github.presenter.LoginPresenter
+import com.bennyhuo.github.view.config.Themer
 import com.bennyhuo.mvp.impl.BaseActivity
 import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import kotlinx.android.synthetic.main.activity_login.*
@@ -23,6 +24,8 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Themer.applyProperTheme(this)
+
         setContentView(R.layout.activity_login)
         setSupportActionBar(toolbar)
 

@@ -7,6 +7,7 @@ import com.bennyhuo.github.network.entities.Repository
 import com.bennyhuo.github.utils.loadWithGlide
 import com.bennyhuo.github.utils.toKilo
 import com.bennyhuo.github.view.common.CommonListAdapter
+import com.bennyhuo.github.view.startRepoDetailActivity
 import kotlinx.android.synthetic.main.item_repo.view.*
 
 /**
@@ -25,7 +26,7 @@ class RepoListAdapter : CommonListAdapter<Repository>(R.layout.item_repo) {
     }
 
     override fun onItemClicked(itemView: View, item: Repository) {
-        // todo
+        itemView.startRepoDetailActivity(item)
     }
 
 }

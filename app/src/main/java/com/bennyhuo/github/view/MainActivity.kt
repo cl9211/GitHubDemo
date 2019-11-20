@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import com.bennyhuo.github.R
 import com.bennyhuo.github.common.ext.no
 import com.bennyhuo.github.common.ext.otherwise
@@ -15,11 +16,14 @@ import com.bennyhuo.github.network.entities.User
 import com.bennyhuo.github.utils.afterClosed
 import com.bennyhuo.github.utils.showFragment
 import com.bennyhuo.github.view.config.NavViewItem
+import com.bennyhuo.github.view.config.Themer
 import com.bennyhuo.github.view.widget.ActionBarController
 import com.bennyhuo.github.view.widget.NavigationController
 import com.bennyhuo.tieguanyin.annotations.ActivityBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.menu_item_daynight.view.*
+import org.jetbrains.anko.sdk15.listeners.onCheckedChange
 import org.jetbrains.anko.toast
 
 @ActivityBuilder(flags = [Intent.FLAG_ACTIVITY_CLEAR_TOP])
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Themer.applyProperTheme(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -99,5 +105,18 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_actionbar, menu)
+        menu.findItem(R.id.dayNight).actionView.dayNightSwitch.apply {
+            isChecked = Themer.currentTheme() == Themer.ThemeMode.DAY
+
+            onCheckedChange { buttonView, isChecked ->
+                Themer.toggle(this@MainActivity)
+
+            }
+        }
+        return true
     }
 }

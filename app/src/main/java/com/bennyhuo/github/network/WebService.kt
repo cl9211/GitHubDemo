@@ -2,8 +2,10 @@ package com.bennyhuo.github.network
 
 import com.bennyhuo.github.AppContext
 import com.bennyhuo.github.common.ext.ensureDir
+import com.bennyhuo.github.network.compat.enableTls12OnPreLollipop
 import com.bennyhuo.github.network.interceptors.AcceptInterceptor
 import com.bennyhuo.github.network.interceptors.AuthInterceptor
+import com.bennyhuo.github.network.interceptors.CacheInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +19,8 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://api.github.com"
+
+const val FORCE_NETWORK = "forceNetwork"
 
 private val cacheFile by lazy {
     File(AppContext.cacheDir, "webServiceApi").apply { ensureDir() }
@@ -34,6 +38,8 @@ val retrofit by lazy {
                     .addInterceptor(AcceptInterceptor())
                     .addInterceptor(AuthInterceptor())
                     .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BODY))
+                    .addInterceptor(CacheInterceptor())
+                    .enableTls12OnPreLollipop()
                     .build()
             )
             .baseUrl(BASE_URL)
